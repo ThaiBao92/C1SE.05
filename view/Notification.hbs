@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="Login.js"></script>
+</head>
+<body>
+    <div class="notification-userpage" id="notification">
+        <div class="userpage-header container">
+            <img src="/img/logo.png" class="img-logo">
+            <div class="userpage-header-search">
+                <input type="search" class="form-control" id="floatingSearch"
+                    placeholder="Search for something here...">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+        <div class="userpage-body">
+            <div class="userpage-body-left">
+                <ul class="nav nav-pills  d-flex flex-column">
+                    <li class="nav-item  ">
+                        <a class="nav-link d-flex flex-row  "  href="/">
+                            <div class="home">
+                                <i class="fa-solid fa-house"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a  class="nav-link d-flex flex-row" href="/user">
+                            <div class="user">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            User
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link d-flex flex-row" href="/notification">
+                            <div class="notification">
+                                <i class="fa-solid fa-bell"></i>
+                                <span class="noti_alert">0</span>
+                            </div>
+                            Notification
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a  style="cursor: pointer" class="nav-link d-flex flex-row logout-btn">
+                            <div class="logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </div>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="homepage-center container mt-3">
+                <div class="notification-page container">
+                    <div class="notification-header container">
+                        <a class="notification-setting">
+                            <strong>Notification</strong>
+                        </a>
+                        <i class="fa-solid fa-gear" id="settingNotification"></i>
+                    </div>
+                    <div class="setting-notification container" id="deletenotification">
+                        <button type="button" class="btn btn-light">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Delete All Notifications
+                        </button>
+                    </div>
+                    <div class="noti_container">
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="homepage-right">
+                <div class="homepage-right-camera container py-2">
+                    <div class="homepage-right-camera1 container">
+                        <img src="/img/upload.png" class="img-camera1">
+                        <div class="btncamera container">
+                            <button type="button" class="btn btn-secondary button-camera1">Unblur</button>
+                            <button type="button" class="btn btn-secondary button-camera3">Download</button>
+                        </div>
+                    </div>
+                    <div class="homepage-right-camera2 container">
+                        <img src="/img/download.png" class="img-camera2">
+                        <div class="btncamera container">
+                            <button type="button" class="btn btn-secondary btn-camera2">Predict</button>
+                            <button type="button" class="btn btn-secondary btn-camera3">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+    <script>
+        const id = localStorage.getItem('userId');
+        const logoutBtn = document.querySelector('.logout-btn');
+        const noti_container = document.querySelector('.noti_container');
+        const noti_alert = document.querySelector('.noti_alert');
+        if(!id){
+            window.location.replace('/login');
+        }
+        //đăng xuất bằng cách xóa id lưu trên localstorage và điều hướng ng dùng về trang chủ:
+        logoutBtn.addEventListener('click', function(){
+            localStorage.removeItem('userId');
+            window.location.replace('/');
+        })
+
+        function loadNotifications(){
+            //xóa hết nôi dụng của div này trước tiên
+            noti_container.innerHTML = ""
+            //Đầu tiên, lấy dữ liệu của tất cả các thông báo
+            fetch('http://localhost:8080/notifications', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: id
+                })
+            }).then(notiData => {
+                return notiData.json();
+            }).then(notiResponses => {
+                //hiển thị số thông báo
+                noti_alert.textContent = notiResponses.length;
+                //sau khi có hết comment, lấy tiếp thông tin tất cả users:
+                fetch('http://localhost:8080/users', {
+                    method: 'POST'
+                }).then(usersData => {
+                    return usersData.json();
+                }).then(usersResponses => {
+                    console.log(notiResponses);
+                    notiResponses.map(noti => {
+                        let user = usersResponses.filter(u => u._id === noti.fromUser);
+                        let commentDate = new Date(noti.createdAt);
+                        let notiId = `'${noti._id}'`;
+                        let htmlNoti = `<div class="noti_item">
+                            <div class="noti_content">
+                                <a href="/singlepost/${noti.postId}">${user[0].firstName} ${user[0].surName} commented your post: ${noti.content}</a>
+                            </div>
+                            <div class="noti_time">
+                                <p>${commentDate.getDate()}/${commentDate.getMonth()}/${commentDate.getFullYear()}</p>
+                            </div>
+                            <div onClick={removeNotification(${notiId})} class="noti_close">
+                                <img src="/img/6990104.png" alt="">
+                            </div>
+                        </div>`
+                        noti_container.insertAdjacentHTML("afterbegin", htmlNoti)
+                    })
+                    //console.log(usersResponses);
+                }).catch(err => {
+                    console.log(err)
+                })
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+        loadNotifications();
+        function removeNotification(id){
+            fetch('http://localhost:8080/deletenoti', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },body: JSON.stringify({
+                    id
+                })
+            }).then(removeData => {
+                return removeData.json();
+            }).then(removeResponses => {
+                loadNotifications();
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
+    </script>
+</body>
+</html>

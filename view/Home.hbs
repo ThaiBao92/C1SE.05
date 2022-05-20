@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="Login.js"></script>
+</head>
+
+<body>
+    <div class="homepage" id="homepage">
+        <div class="homepage-header container">
+            <img src="/img/logo.png" class="img-logo">
+            <div class="homepage-header-search">
+                <input type="search" class="form-control search_input" id="floatingSearch" placeholder="Search for something here...">
+                <i class="fa-solid fa-magnifying-glass search_btn"></i>
+            </div>
+        </div>
+        <div class="homepage-body">
+            <div class="homepage-left">
+                <ul class="nav nav-pills  d-flex flex-column">
+                    <li class="nav-item  ">
+                        <a class="nav-link d-flex flex-row " href="/">
+                            <div class="home">
+                                <i class="fa-solid fa-house"></i>
+                            </div>
+                            Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a onclick="user()" class="nav-link d-flex flex-row" href="/user">
+                            <div class="user">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            User
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                         <a class="nav-link d-flex flex-row" href="/notification">
+                            <div class="notification">
+                                <i class="fa-solid fa-bell"></i>
+                                <span class="noti_alert">0</span>
+                            </div>
+                            Notification
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a  style="cursor: pointer" class="nav-link d-flex flex-row logout-btn">
+                            <div class="logout">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            </div>
+                            Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="homepage-center container mt-3">
+                <div class="row post_left">
+                    <div class="homepage-center-status container py-2">
+                        <div class="homepage-center-status1 container">
+                            <img src="/img/user.png" class="img-user user_posting_avatar">
+                            <input  type="search" class="form-control abc post_content" id="floatingStatus" placeholder="What's happenning?">
+                        </div>
+
+                        <div class="homepage-center-status2 pe-3 py-2">
+                            <input type="file" id="img" class="txtPhoto hidden post_file" >
+                            <label for="img">
+                                <img class="post_img" src="/img/img.png" alt="">
+                            </label>
+                            <button type="button" class="btn btn-primary button post_btn">Post</button>
+                        </div>
+                    </div>
+                    <div class="homepage-center-donate container py-2">
+                        <a href="/donate">
+                            <button type="button"  class="btn btn-primary btn-report">
+                                <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                Donate
+                            </button>
+                        </a>
+                        <button type="button" class="btn btn-primary btn-report">
+                            <p>Report a missing person</p>
+                        </button>
+                    </div>
+                    <div class="load-image container post_left_images">
+                        <div class="photo1 container">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="loading">
+                    <div class="spinner-border text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                {{!-- Nơi hiển thị posts --}}
+                <div class="posts_container"></div>
+            </div>
+            
+            <div class="homepage-right">
+                <div class="homepage-right-camera container py-2">
+                    <div class="homepage-right-camera1 container">
+                        <img src="/img/upload.png" class="img-camera1">
+                        <div class="btncamera container">
+                            <button type="button" class="btn btn-secondary button-camera1">Unblur</button>
+                            <button type="button" class="btn btn-secondary button-camera3">Download</button>
+                        </div>
+                    </div>
+                    <div class="homepage-right-camera2 container">
+                        <img src="/img/download.png" class="img-camera2">
+                        <div class="btncamera container">
+                            <button type="button" class="btn btn-secondary btn-camera2">Predict</button>
+                            <button type="button" class="btn btn-secondary btn-camera3">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
+        crossorigin="anonymous"></script>
+    <script>
+        const logoutBtn = document.querySelector('.logout-btn');
+        const postBtn = document.querySelector('.post_btn');
+        const post_content = document.querySelector('.post_content');
+        const post_file = document.querySelector('.post_file'); 
+        const posts_container = document.querySelector('.posts_container');
+        const loading = document.querySelector('.loading');
+        const user_posting_avatar = document.querySelector('.user_posting_avatar');
+        const comment_input = document.querySelector('.comment');
+        const search_input = document.querySelector('.search_input');
+        const search_btn = document.querySelector('.search_btn');
+        const photos_container = document.querySelector('.photo1');
+        let file;
+        let posts;
+        let users;
+        //lấy thông tin người dùng lưu trên localstorage:
+        const id = localStorage.getItem('userId');
+        //hiển thị thông báo
+        const noti_alert = document.querySelector('.noti_alert');
+        if(id && id != undefined){
+            fetch('http://localhost:8080/notifications', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: id
+                })
+            }).then(notiData => {
+                return notiData.json();
+            }).then(notiResponses => {
+                //hiển thị số thông báo
+                noti_alert.textContent = notiResponses.length;
+            })
+        }
+        //---------tìm kiếm---------------
+        search_btn.addEventListener('click', () => {
+            //lấy input người dùng nhập vào:
+            const search = search_input.value.trim();
+            //lọc với tất cả các post có chứa tags liên quan:
+            const relatedPosts = posts.filter(post => post.tags.includes(search));
+            //ẩn thanh loader:
+            loading.style.display = 'none';
+            //lấy id của post:
+            let postID;
+            //lấy id của user đang đăng nhập:
+            let currentUserID = `'${id}'`
+            posts_container.innerHTML = "";
+            relatedPosts.map(post => {
+                postID = `'${post._id}'`;
+                let curentUser = users?.find(user => user._id === id);
+                user_posting_avatar.src = curentUser === undefined ? '/img/user.png' : `/img/${curentUser.avatar}`;
+                let postOwner = users?.find(user => user._id === post.userId);
+                let HTMLcomments = '';
+                post.comments.map(comment => {
+                    const commentedUser = users.find(user => user._id === comment.userID);
+                    HTMLcomments += `<div class="post_comments">
+                        <div class="post_comment_left">
+                            <img src="/img/${commentedUser?.avatar}" class="comment_img">
+                        </div>
+                        <div class="post_comment_right">
+                            <div class="post_comment_owner">${commentedUser?.firstName} ${commentedUser?.surName}</div>
+                            <div class="post_comment_content">${comment?.comment}</div>
+                        </div>
+                    </div>`
+                })
+                let html = `<div class="homepage-center-image">
+                <div class="homepage-center-post container py-2">
+                    <div class="homepage-center-post1 container">
+                        <div>
+                            <img src="/img/${postOwner?.avatar}" class="img-user">
+                            <label class="ten post_user">${postOwner?.firstName} ${postOwner?.surName}</label>
+                        </div>
+                        <button type="button" class="btn btn-light bacham">...</button>
+                    </div>
+                    <div class="box-setting container">
+                        
+                    </div>
+                    <div class="post_title">
+                        <p>${post.content}</p>
+                    </div>
+                    <div class="homepage-center-picture container post_img_container">
+                        <img src="/img/${post.image}" class="post_img">
+                    </div>
+                    <div class="homepage-center-post2 pe-3 py-2">
+                        <button type="button" class="btn btn-secondary button-post">Comment</button>
+                        <button type="button" class="btn btn-secondary button-post">Report Sighting</button>
+                        <button type="button" class="btn btn-secondary button-post">Share</button>
+                    </div>
+                    <div  class="comments_container">
+                        ${HTMLcomments}
+                    </div>
+                    <div class="homepage-center-comment container">
+                        <img src="${curentUser ? '/img/'+curentUser.avatar :'/img/user.png'}" class="img-comment">
+                        <input onChange={commentChangeHandler(this)} type="search" class="form-control comment" id="floatingStatus" placeholder="Write a comment...">
+                        <i onClick={commentHandler(${postID},${currentUserID})} class="fa-solid fa-paper-plane comment_icon"></i>
+                    </div>
+
+                </div>
+            
+            </div>`
+                posts_container.insertAdjacentHTML("afterbegin", html);
+            })
+        })
+        post_file.addEventListener('change', (e) => {
+            file = e.target.files[0];
+        })
+        //đăng xuất bằng cách xóa id lưu trên localstorage và điều hướng ng dùng về trang chủ:
+        logoutBtn.addEventListener('click', function(){
+            localStorage.removeItem('userId');
+            window.location.replace('/');
+        })
+        postBtn.addEventListener('click', () => {
+            if(!id){
+                window.location.replace('/login');
+            }
+            //nếu có id, gửi id về server và kiểm tra:
+            fetch('http://localhost:8080/user', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id})
+            }).then(data => {
+                //nếu id lưu trên localstorage bị sai:
+                if(data.status === 401){
+                    localStorage.removeItem('userId');
+                    window.location.replace('/login');
+                }
+                //chuyển dữ liệu về dạng json
+                return data.json();
+            }).then(data => {
+                //tạo mới một form data:
+                const dataForm = new FormData();
+                //thêm thời gian vào trước tên file để đảm bảo tên file ko bị trùng lặp:
+                const fileName = file ? Date.now() + file.name: '';
+                dataForm.append("name", fileName);
+                dataForm.append("file", file);
+                //lấy nội dung bài đăng mà người dùng nhập vào:
+                const post_ct = post_content.value;
+                //tải ảnh lên server:
+                fetch("http://localhost:8080/upload", {
+                    method: 'POST',
+                    body: dataForm
+                }).then(data => {
+                    return data.json();
+                }).then(response => {
+                    //sau khi đã tải ảnh lên, tiếp tục tải nội dung bài viết
+                    const tags = post_ct.split("#").slice(1).map(t => t.trim());
+                    const newPost = {
+                        content: post_ct,
+                        image: fileName,
+                        userId: id,
+                        tags: tags
+                    }
+                    fetch('http://localhost:8080/post', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body:JSON.stringify(newPost)
+                    }).then(data => {
+                        return data.json();
+                    }).then(res => {
+                        //up post xong rồi thì load lại post:
+                        post_content.value ='';
+                        file = null;
+                        getAllPosts();
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                })
+            }).catch(err => {
+                //nếu có lỗi, chuyển ng dùng về trang login
+                console.log(err)
+                //window.location.replace('/login');
+            })
+        })
+        //lấy dữ liệu về các bài đăng:
+        function getAllPosts(){
+            posts_container.innerHTML = "";
+            photos_container.innerHTML = "";
+            //lấy dữ liệu tất cả người dùng:
+            fetch('http://localhost:8080/users', {
+                method: 'POST',
+            })
+            .then(dataa => {
+                return dataa.json();
+            }).then(res => {
+                users = res;
+                //sau khi có dữ liệu người dùng thì lấy dữ liệu của tất cả post:
+                fetch('http://localhost:8080/posts', {
+                method: 'POST'
+                }).then(data => {
+                    return data.json();
+                }).then(response => {
+                    posts = response;
+                    //ẩn spinner khi load hết dữ liệu:
+                    loading.style.display = 'none';
+                    let postID;
+                    let ownerID;
+                    let currentUserID = `'${id}'`
+                    response.map(post => {
+                        postID = `'${post._id}'`;
+                        ownerID = `'${post.userId}'`;
+                        let curentUser = users?.find(user => user._id === id);
+                        user_posting_avatar.src = curentUser === undefined ? '/img/user.png': `/img/${curentUser.avatar}`;
+                        let postOwner = users?.find(user => user._id === post.userId);
+                        let HTMLcomments = '';
+                        post.comments.map(comment => {
+                            const commentedUser = users.find(user => user._id === comment.userID);
+                            HTMLcomments += `<div class="post_comments">
+                                <div class="post_comment_left">
+                                    <img src="/img/${commentedUser?.avatar}" class="comment_img">
+                                </div>
+                                <div class="post_comment_right">
+                                    <div class="post_comment_owner">${commentedUser?.firstName} ${commentedUser?.surName}</div>
+                                    <div class="post_comment_time">${comment.time}</div>
+                                    <div class="post_comment_content">${comment.comment}</div>
+                                </div>
+                            </div>`
+                        })
+                        let imgHtml = `<img src="/img/${post.image}" class="imgphoto">`
+                        let html = `<div class="homepage-center-image">
+                        <div class="homepage-center-post container py-2">
+                            <div class="homepage-center-post1 container">
+                                <div>
+                                    <img src="/img/${postOwner?.avatar}" class="img-user">
+                                    <label class="ten post_user">${postOwner?.firstName} ${postOwner?.surName}</label>
+                                </div>
+                                <button type="button" class="btn btn-light bacham">...</button>
+                            </div>
+                            <div class="box-setting container">
+                                
+                            </div>
+                            <div class="post_title">
+                                <p>${post.content}</p>
+                            </div>
+                            <div class="homepage-center-picture container post_img_container">
+                                <img src="/img/${post.image}" class="post_img">
+                            </div>
+                            <div class="homepage-center-post2 pe-3 py-2">
+                                <button type="button" class="btn btn-secondary button-post">Comment</button>
+                                <button type="button" class="btn btn-secondary button-post">Report Sighting</button>
+                                <button type="button" class="btn btn-secondary button-post">Share</button>
+                            </div>
+                            <div  class="comments_container">
+                                ${HTMLcomments}
+                            </div>
+                            <div class="homepage-center-comment container">
+                                <img src="${curentUser ? '/img/'+curentUser.avatar :'/img/user.png'}" class="img-comment">
+                                <input onChange={commentChangeHandler(this)} type="search" class="form-control comment" id="floatingStatus" placeholder="Write a comment...">
+                                <i onClick={commentHandler(${postID},${currentUserID},${ownerID})} class="fa-solid fa-paper-plane comment_icon"></i>
+                            </div>
+
+                        </div>
+                    
+                    </div>`
+                        photos_container.insertAdjacentHTML("beforebegin", imgHtml)
+                        posts_container.insertAdjacentHTML("afterbegin", html);
+                    })
+                }).catch(err => {
+                    console.log(err);
+                })
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        getAllPosts();
+        //khi người dùng nhập comment:
+        let comment;
+        function commentChangeHandler(e){
+            comment = e.value;
+        }
+        //comment
+        function commentHandler(postID, userID, ownerID){
+            //nếu ko có người dùng thì ko thể comment, vậy nên ta điều hướng người dùng về trang login
+            if(!id){
+                window.location.replace('/login');
+                return;
+            }
+
+            const d = new Date();
+            let time = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`
+            fetch('http://localhost:8080/comment', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({postID, userID, comment, time})
+            }).then(data => {
+                return data.json();
+            }).then(response => {
+                //thêm thông báo khi comment:
+                fetch('http://localhost:8080/notification',{
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        postID: postID,
+                        content: comment,
+                        from: userID,
+                        type: 'comment',
+                        userId: ownerID
+                    })
+                }).then(dd => {
+                    return dd.json();
+                }).then(ress => {
+                    console.log(ress)
+                    getAllPosts();
+                }).catch(err => {
+                    console.log(err);
+                })
+            }).catch(err => {
+                console.log(err);
+            })
+        }
+    </script>
+</body>
+
+</html>
