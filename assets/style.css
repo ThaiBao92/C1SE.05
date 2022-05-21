@@ -566,8 +566,9 @@
 }
 
 .img-camera1 {
-    width: 50%;
-    height: 150px;
+    width: 130px;
+    height: 130px;
+    margin-top: 10px;
 }
 
 .img-camera2 {
@@ -1304,4 +1305,8 @@
 }
 .user-dob{
     font-size: 12px;
+}
+.noti_item{
+    background-color: #ebedf3;
+    border-radius: 10px;
 }

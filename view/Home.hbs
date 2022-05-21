@@ -106,7 +106,9 @@
             <div class="homepage-right">
                 <div class="homepage-right-camera container py-2">
                     <div class="homepage-right-camera1 container">
-                        <img src="/img/upload.png" class="img-camera1">
+                        <label for="img">
+	                        <img class="img-camera1" src="/img/img.png" alt="">
+                        </label>
                         <div class="btncamera container">
                             <button type="button" class="btn btn-secondary button-camera1">Unblur</button>
                             <button type="button" class="btn btn-secondary button-camera3">Download</button>
@@ -172,7 +174,7 @@
         search_btn.addEventListener('click', () => {
             //lấy input người dùng nhập vào:
             const search = search_input.value.trim();
-            //lọc với tất cả các post có chứa tags liên quan:
+            //lọc với tất cả các post có chứa tag liên quan:
             const relatedPosts = posts.filter(post => post.tags.includes(search));
             //ẩn thanh loader:
             loading.style.display = 'none';
